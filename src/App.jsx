@@ -3,7 +3,8 @@ import './App.css'
 import WeatherScene from './components/WeatherScene'
 import OutfitAvatar from './components/OutfitAvatar'
 import RouteVisual from './components/RouteVisual'
-import { fmtTime, fmtDate } from './lib/format'
+import DigitalClock from './components/DigitalClock'
+import { fmtTime } from './lib/format'
 import { PLACE_GROUPS, findPlace, ALL_PLACES } from './data/places'
 import { getWeather, CONDITION_LABEL } from './lib/weather'
 import { planTrips, getNearbyArrivals, distKm } from './lib/transit'
@@ -94,10 +95,7 @@ export default function App() {
             <p>대구 날씨와 교통을 함께 보고, 지금 떠나기 좋은 방법을 알려드려요</p>
           </div>
           <div className="weather-pill">
-            <div className="w-clock">
-              <span className="w-date">{fmtDate(now)}</span>
-              <span className="w-time">{fmtTime(now)}</span>
-            </div>
+            <DigitalClock now={now} />
             {weather ? (
               <>
                 <span className="w-icon">{COND_ICON[weather.condition]}</span>
