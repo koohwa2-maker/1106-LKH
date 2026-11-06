@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/api/datagokr/:path*", "destination": "/api/datagokr?path=:path*" }
+  ]
+}

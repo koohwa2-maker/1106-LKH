@@ -18,4 +18,9 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  {
+    // Vercel 서버리스 함수 / 설정 파일은 Node 환경
+    files: ['api/**/*.js', '*.config.js'],
+    languageOptions: { globals: globals.node },
+  },
 ])
