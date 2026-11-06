@@ -61,10 +61,17 @@
 .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
 .top h1 { margin: 0; font-size: 34px; font-weight: 900; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.25); letter-spacing: -0.5px; }
 .top p { margin: 4px 0 0; color: rgba(255,255,255,.92); text-shadow: 0 1px 6px rgba(0,0,0,.3); }
-.weather-pill { display: flex; align-items: center; gap: 12px; padding: 12px 18px; }
+/* 날씨 창: 투명 배경 + 흰 글씨 */
+.weather-pill { display: flex; align-items: center; gap: 14px; padding: 12px 18px; flex-wrap: wrap;
+  background: transparent; border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 22px;
+  color: #fff; text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35); }
+.weather-pill .w-clock { display: flex; flex-direction: column; padding-right: 14px;
+  border-right: 1px solid rgba(255, 255, 255, 0.35); }
+.weather-pill .w-date { font-size: 13px; font-weight: 500; }
+.weather-pill .w-time { font-size: 28px; font-weight: 900; font-variant-numeric: tabular-nums; line-height: 1.15; }
 .weather-pill .w-icon { font-size: 38px; }
 .weather-pill strong { font-size: 26px; font-weight: 900; }
-.weather-pill small { display: block; color: var(--ink-soft); font-size: 12.5px; }
+.weather-pill small { display: block; color: rgba(255, 255, 255, 0.9); font-size: 12.5px; }
 .weather-pill .src { opacity: .75; }
 
 .search { display: grid; grid-template-columns: 1fr auto 1fr auto; gap: 12px; align-items: end; padding: 18px; margin-bottom: 18px; }

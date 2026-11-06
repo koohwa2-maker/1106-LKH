@@ -3,7 +3,7 @@ import './App.css'
 import WeatherScene from './components/WeatherScene'
 import OutfitAvatar from './components/OutfitAvatar'
 import RouteVisual from './components/RouteVisual'
-import { fmtTime } from './lib/format'
+import { fmtTime, fmtDate } from './lib/format'
 import { PLACE_GROUPS, findPlace, ALL_PLACES } from './data/places'
 import { getWeather, CONDITION_LABEL } from './lib/weather'
 import { planTrips, getNearbyArrivals, distKm } from './lib/transit'
@@ -41,7 +41,7 @@ export default function App() {
   const [bus, setBus] = useState({ state: 'idle' })
 
   useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 30000)
+    const t = setInterval(() => setNow(new Date()), 1000)
     return () => clearInterval(t)
   }, [])
 
@@ -93,7 +93,11 @@ export default function App() {
             <h1>달구벌 길잡이</h1>
             <p>대구 날씨와 교통을 함께 보고, 지금 떠나기 좋은 방법을 알려드려요</p>
           </div>
-          <div className="weather-pill glass">
+          <div className="weather-pill">
+            <div className="w-clock">
+              <span className="w-date">{fmtDate(now)}</span>
+              <span className="w-time">{fmtTime(now)}</span>
+            </div>
             {weather ? (
               <>
                 <span className="w-icon">{COND_ICON[weather.condition]}</span>
@@ -101,7 +105,7 @@ export default function App() {
                   <strong>{weather.temp.toFixed(1)}°</strong> {CONDITION_LABEL[weather.condition]}
                   <small>체감 {weather.feels.toFixed(0)}° · 습도 {weather.humidity}% · 바람 {weather.wind.toFixed(1)}m/s</small>
                   <small className="src" title={weather.fallbackReason ? `기상청 API 실패: ${weather.fallbackReason}` : ''}>
-                    {weather.source}{weather.fallbackReason ? ' (기상청 API 대체)' : ''} · {fmtTime(now)}
+                    {weather.source}{weather.fallbackReason ? ' (기상청 API 대체)' : ''}
                   </small>
                 </div>
               </>
