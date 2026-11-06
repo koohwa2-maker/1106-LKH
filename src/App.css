@@ -1,0 +1,149 @@
+/* ───────── 날씨 배경 ───────── */
+.scene { position: fixed; inset: 0; overflow: hidden; z-index: 0; transition: background 1.2s; }
+.scene-clear.is-day    { background: linear-gradient(180deg, #3d8fe0 0%, #7cc0f2 55%, #cfeaff 100%); }
+.scene-clear.is-night  { background: linear-gradient(180deg, #070f24 0%, #14284f 60%, #2b4675 100%); }
+.scene-cloudy.is-day   { background: linear-gradient(180deg, #6c9cc8 0%, #a9c8e2 60%, #dde9f3 100%); }
+.scene-cloudy.is-night { background: linear-gradient(180deg, #111c30 0%, #26354f 60%, #3d4d68 100%); }
+.scene-overcast.is-day { background: linear-gradient(180deg, #7e8b99 0%, #a9b3be 60%, #cfd5db 100%); }
+.scene-overcast.is-night { background: linear-gradient(180deg, #171c24 0%, #2b323d 60%, #3d4552 100%); }
+.scene-rain.is-day     { background: linear-gradient(180deg, #45566b 0%, #6d7e92 60%, #95a3b3 100%); }
+.scene-rain.is-night   { background: linear-gradient(180deg, #0c121c 0%, #1e2a3a 60%, #2f3d50 100%); }
+.scene-snow.is-day     { background: linear-gradient(180deg, #a9b9cc 0%, #d3dde8 60%, #f1f5f9 100%); }
+.scene-snow.is-night   { background: linear-gradient(180deg, #1d2740 0%, #3b4866 60%, #66759a 100%); }
+.scene-storm           { background: linear-gradient(180deg, #1c222d 0%, #343c4b 60%, #4d5668 100%); }
+
+.sun { position: absolute; top: 9%; right: 12%; width: 120px; height: 120px; border-radius: 50%;
+  background: radial-gradient(circle, #fff6c2 0%, #ffd84a 55%, #ffb627 100%);
+  box-shadow: 0 0 80px 30px rgba(255, 214, 80, 0.55); }
+.sun-rays { position: absolute; inset: -50px; border-radius: 50%; animation: spin 40s linear infinite;
+  background: repeating-conic-gradient(rgba(255, 230, 120, 0.35) 0 6deg, transparent 6deg 30deg);
+  mask: radial-gradient(circle, transparent 60px, #000 62px, transparent 110px);
+  -webkit-mask: radial-gradient(circle, transparent 60px, #000 62px, transparent 110px); }
+.moon { position: absolute; top: 10%; right: 14%; width: 90px; height: 90px; border-radius: 50%;
+  background: #f4f1de; box-shadow: inset -22px -8px 0 0 #d9d4b8, 0 0 60px 12px rgba(244, 241, 222, 0.35); }
+.star { position: absolute; border-radius: 50%; background: #fff; animation: twinkle 3s ease-in-out infinite; }
+
+.cloud { position: absolute; animation: drift linear infinite; filter: drop-shadow(0 6px 10px rgba(0,0,0,.08)); }
+.scene-rain .cloud, .scene-storm .cloud, .scene-overcast .cloud { opacity: .95; }
+
+.rain i { position: absolute; top: -10%; width: 2px; height: 70px;
+  background: linear-gradient(transparent, rgba(220, 235, 255, 0.85));
+  animation: fall linear infinite; transform: rotate(12deg); }
+.snow i { position: absolute; top: -5%; border-radius: 50%; background: #fff; opacity: .9;
+  animation: snow linear infinite; box-shadow: 0 0 6px rgba(255,255,255,.8); }
+.lightning { position: absolute; inset: 0; background: #fff; opacity: 0; animation: flash 7s infinite; }
+
+.skyline { position: absolute; bottom: 0; left: 0; width: 100%; height: 26vh; min-height: 160px; }
+.skyline .ridge { fill: rgba(40, 70, 90, 0.35); }
+.skyline .city  { fill: rgba(25, 40, 60, 0.55); }
+.skyline .ground { fill: rgba(25, 40, 60, 0.6); }
+.is-night .skyline .city { fill: rgba(5, 10, 20, 0.85); }
+.is-night .skyline .ridge { fill: rgba(10, 20, 35, 0.6); }
+.snow-ground { position: absolute; bottom: 0; left: 0; right: 0; height: 30px; background: #f4f8fc;
+  border-radius: 50% 50% 0 0 / 20px 20px 0 0; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes twinkle { 50% { opacity: .2; } }
+@keyframes drift { from { transform: translateX(-30vw); } to { transform: translateX(130vw); } }
+@keyframes fall { to { transform: translate(-25vh, 115vh) rotate(12deg); } }
+@keyframes snow { 0% { transform: translate(0, 0); } 50% { transform: translate(var(--sway), 55vh); } 100% { transform: translate(0, 110vh); } }
+@keyframes flash { 0%, 92%, 96%, 100% { opacity: 0; } 93%, 95% { opacity: .55; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .scene * { animation: none !important; }
+}
+
+/* ───────── 레이아웃 ───────── */
+.app { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 28px 20px 60px; }
+.glass { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 22px;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 10px 40px rgba(10, 30, 60, 0.15); }
+
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+.top h1 { margin: 0; font-size: 34px; font-weight: 900; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.25); letter-spacing: -0.5px; }
+.top p { margin: 4px 0 0; color: rgba(255,255,255,.92); text-shadow: 0 1px 6px rgba(0,0,0,.3); }
+.weather-pill { display: flex; align-items: center; gap: 12px; padding: 12px 18px; }
+.weather-pill .w-icon { font-size: 38px; }
+.weather-pill strong { font-size: 26px; font-weight: 900; }
+.weather-pill small { display: block; color: var(--ink-soft); font-size: 12.5px; }
+.weather-pill .src { opacity: .75; }
+
+.search { display: grid; grid-template-columns: 1fr auto 1fr auto; gap: 12px; align-items: end; padding: 18px; margin-bottom: 18px; }
+.field { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 13px; color: var(--ink-soft); }
+.field select { padding: 12px 14px; border-radius: 12px; border: 1px solid #d5dbe5; background: #fff; color: var(--ink); font-size: 15px; }
+.swap { width: 44px; height: 46px; border-radius: 12px; border: 1px solid #d5dbe5; background: #fff; font-size: 20px; cursor: pointer; }
+.search-actions { display: flex; gap: 8px; }
+.primary, .ghost { padding: 12px 18px; border-radius: 12px; font-weight: 700; cursor: pointer; border: none; white-space: nowrap; }
+.primary { background: var(--accent); color: #fff; }
+.primary:disabled { background: #9fb2d6; cursor: not-allowed; }
+.ghost { background: #fff; border: 1px solid #d5dbe5; color: var(--ink); }
+
+/* 메인 이미지 영역 */
+.hero { display: grid; grid-template-columns: minmax(300px, 0.9fr) 1.3fr; gap: 10px; padding: 22px; margin-bottom: 18px; }
+.hero h2 { margin: 0 0 6px; font-size: 21px; }
+.hero-outfit { display: flex; gap: 14px; align-items: center; padding-right: 18px; border-right: 1px dashed #c7cfdb; }
+.avatar { flex-shrink: 0; filter: drop-shadow(0 8px 14px rgba(0,0,0,.12)); }
+.outfit-main { font-size: 17px; font-weight: 700; margin: 0 0 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.chip { background: #fff; border: 1px solid #dfe4ec; border-radius: 999px; padding: 4px 10px; font-size: 13px; }
+.tips, .reasons { margin: 0; padding-left: 18px; color: var(--ink-soft); font-size: 13.5px; line-height: 1.6; }
+.reasons { list-style: none; padding: 0; margin-top: 12px; }
+
+.hero-route { padding-left: 8px; min-width: 0; }
+.best-head p { margin: 0 0 14px; color: var(--ink-soft); }
+.badge { display: inline-block; background: #ff6b3d; color: #fff; font-size: 12px; font-weight: 700; border-radius: 6px; padding: 3px 8px; margin-bottom: 6px; }
+.empty { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+.empty-art { font-size: 44px; letter-spacing: 10px; margin-bottom: 8px; }
+.empty p { color: var(--ink-soft); max-width: 420px; }
+
+/* 경로 이미지 */
+.route-ends { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; margin-bottom: 10px; }
+.route-ends small { display: block; color: var(--ink-soft); font-size: 12px; }
+.route-ends strong { font-size: 16px; }
+.route-ends .right { text-align: right; }
+.route-mode { font-size: 30px; text-align: center; line-height: 1; }
+.route-mode span { display: block; font-size: 13px; font-weight: 700; margin-top: 4px; }
+.route-bar { display: flex; height: 34px; border-radius: 10px; overflow: hidden; gap: 2px; background: #fff; }
+.seg { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; min-width: 6px; white-space: nowrap; overflow: hidden; }
+.seg-wait, .seg-walk { color: #26303f; }
+.timeline { list-style: none; margin: 14px 0 0; padding: 0; position: relative; }
+.timeline::before { content: ''; position: absolute; left: 15px; top: 10px; bottom: 10px; width: 2px; background: #d5dbe5; }
+.timeline li { position: relative; display: grid; grid-template-columns: 32px 46px 1fr auto; gap: 8px; align-items: center; padding: 5px 0; font-size: 14px; }
+.tl-dot { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; z-index: 1; border: 2px solid #fff; }
+.tl-time { font-variant-numeric: tabular-nums; color: var(--ink-soft); font-size: 13px; }
+.tl-min { color: var(--ink-soft); font-size: 12.5px; white-space: nowrap; }
+.tl-end { font-weight: 700; }
+
+/* 비교 */
+.compare h3 { color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.3); margin: 0 0 10px; }
+.options { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.option { text-align: left; padding: 14px 16px; cursor: pointer; display: grid; grid-template-columns: auto 1fr auto; gap: 2px 10px; align-items: center; color: var(--ink); }
+.option.active { outline: 3px solid var(--accent); }
+.o-icon { font-size: 28px; grid-row: span 2; }
+.option strong em { font-style: normal; font-size: 11px; background: #ff6b3d; color: #fff; padding: 2px 6px; border-radius: 5px; margin-left: 6px; }
+.o-min { font-weight: 900; font-size: 20px; }
+.option small { grid-column: 2 / 4; color: var(--ink-soft); }
+.note { grid-column: 1 / -1; color: #fff; margin: 0; }
+.bus { padding: 16px 18px; }
+.bus h3 { color: var(--ink); text-shadow: none; font-size: 16px; }
+.muted { color: var(--ink-soft); font-size: 13.5px; margin: 0 0 8px; }
+.arrivals { display: flex; flex-wrap: wrap; gap: 8px; }
+.arr { background: #fff; border: 1px solid #dfe4ec; border-radius: 10px; padding: 6px 10px; font-size: 13.5px; }
+.arr b { color: var(--accent); }
+
+footer { margin-top: 26px; text-align: center; color: rgba(255,255,255,.85); font-size: 12px; text-shadow: 0 1px 4px rgba(0,0,0,.4); }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-outfit { border-right: none; border-bottom: 1px dashed #c7cfdb; padding: 0 0 16px; }
+  .search { grid-template-columns: 1fr; }
+  .swap { justify-self: center; transform: rotate(90deg); }
+  .search-actions > * { flex: 1; }
+}
+@media (max-width: 480px) {
+  .app { padding: 18px 16px 40px; }
+  .hero-outfit { flex-direction: column; text-align: center; }
+  .chips { justify-content: center; }
+  .tips { text-align: left; }
+  .timeline li { grid-template-columns: 32px 42px 1fr; }
+  .tl-min { grid-column: 3; }
+}
