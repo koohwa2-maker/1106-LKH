@@ -1,12 +1,5 @@
 // 추천 복장을 입은 캐릭터 일러스트 (SVG 레이어 조합)
-
-const SKIN = '#f4cba8'
-const OUTER = {
-  jacket: { color: '#4a6fa5', len: 200 },
-  trench: { color: '#c9a675', len: 262 },
-  coat: { color: '#3f3f55', len: 255 },
-  padding: { color: '#24304d', len: 268 },
-}
+import { SKIN, OUTER_STYLE as OUTER } from '../lib/outfit'
 
 export default function OutfitAvatar({ outfit, size = 260 }) {
   if (!outfit) return null

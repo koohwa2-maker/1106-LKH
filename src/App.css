@@ -151,6 +151,40 @@
 .arr { background: #fff; border: 1px solid #dfe4ec; border-radius: 10px; padding: 6px 10px; font-size: 13.5px; }
 .arr b { color: var(--accent); }
 
+/* 2D 캐릭터 → 3D 보기 버튼 */
+.avatar-btn { position: relative; flex-shrink: 0; padding: 0; border: none; background: none; cursor: pointer;
+  border-radius: 18px; transition: transform .2s; }
+.avatar-btn:hover { transform: translateY(-3px) scale(1.02); }
+.avatar-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+.avatar-hint { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); white-space: nowrap;
+  background: rgba(20, 32, 51, 0.82); color: #fff; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 999px; }
+
+/* 3D 뷰어 모달 */
+.o3d-overlay { position: fixed; inset: 0; z-index: 50; background: rgba(8, 14, 26, 0.6);
+  display: grid; place-items: center; padding: 16px; backdrop-filter: blur(4px); }
+.o3d-loading { color: #fff; font-weight: 700; text-align: center; max-width: 420px; line-height: 1.6;
+  display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.o3d-modal { width: min(920px, 100%); max-height: calc(100vh - 32px); overflow: auto; background: #fff;
+  border-radius: 22px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35); }
+.o3d-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-bottom: 1px solid #e6eaf0; }
+.o3d-head h2 { margin: 0; font-size: 18px; }
+.o3d-close { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #d5dbe5; background: #fff; cursor: pointer; font-size: 16px; }
+.o3d-body { display: grid; grid-template-columns: 1fr 240px; }
+.o3d-canvas { height: min(68vh, 560px); min-height: 320px; cursor: grab; touch-action: none; }
+.o3d-canvas:active { cursor: grabbing; }
+.o3d-canvas canvas { display: block; }
+.o3d-side { padding: 18px; border-left: 1px solid #e6eaf0; }
+.o3d-summary { font-weight: 700; margin: 0 0 12px; }
+.o3d-items { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 8px; font-size: 14px; }
+.o3d-items li { display: flex; align-items: center; gap: 8px; }
+.o3d-items li span { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0, 0, 0, 0.15); }
+.o3d-hint { color: var(--ink-soft); font-size: 12.5px; margin: 0; }
+@media (max-width: 700px) {
+  .o3d-body { grid-template-columns: 1fr; }
+  .o3d-canvas { height: 52vh; }
+  .o3d-side { border-left: none; border-top: 1px solid #e6eaf0; }
+}
+
 footer { margin-top: 26px; text-align: center; color: rgba(255,255,255,.85); font-size: 12px; text-shadow: 0 1px 4px rgba(0,0,0,.4); }
 
 @media (max-width: 860px) {

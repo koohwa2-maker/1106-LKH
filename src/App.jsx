@@ -1,14 +1,18 @@
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import './App.css'
 import WeatherScene from './components/WeatherScene'
 import OutfitAvatar from './components/OutfitAvatar'
 import RouteVisual from './components/RouteVisual'
 import DigitalClock from './components/DigitalClock'
+import ErrorBoundary from './components/ErrorBoundary'
 import { fmtTime } from './lib/format'
 import { PLACE_GROUPS, findPlace, ALL_PLACES } from './data/places'
 import { getWeather, CONDITION_LABEL } from './lib/weather'
 import { planTrips, getNearbyArrivals, distKm } from './lib/transit'
 import { recommendOutfit, ACCESSORY_LABEL } from './lib/outfit'
+
+// 3D 뷰어(three.js)는 클릭했을 때만 불러옴
+const Outfit3DViewer = lazy(() => import('./components/Outfit3DViewer'))
 
 const MODE_ICON = { metro: '🚇', bus: '🚌', taxi: '🚕', walk: '🚶' }
 const COND_ICON = { clear: '☀️', cloudy: '⛅', overcast: '☁️', rain: '🌧️', snow: '❄️', storm: '⛈️' }
@@ -40,6 +44,8 @@ export default function App() {
   const [plan, setPlan] = useState(null)
   const [selectedId, setSelectedId] = useState(null)
   const [bus, setBus] = useState({ state: 'idle' })
+  const [show3D, setShow3D] = useState(false)
+  const close3D = useCallback(() => setShow3D(false), [])
 
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000)
@@ -124,7 +130,12 @@ export default function App() {
         {/* 메인: 출발 복장 + 교통 이미지 */}
         <section className="hero glass">
           <div className="hero-outfit">
-            <OutfitAvatar outfit={outfit} size={210} />
+            {outfit && (
+              <button className="avatar-btn" onClick={() => setShow3D(true)} aria-label="추천 복장을 3D로 보기">
+                <OutfitAvatar outfit={outfit} size={210} />
+                <span className="avatar-hint">🔄 클릭하면 3D로 보기</span>
+              </button>
+            )}
             {outfit && (
               <div className="outfit-text">
                 <h2>{trip ? '출발 복장 추천' : '오늘의 복장'}</h2>
@@ -199,6 +210,21 @@ export default function App() {
               )}
             </div>
           </section>
+        )}
+
+        {show3D && outfit && (
+          <ErrorBoundary fallback={() => (
+            <div className="o3d-overlay" onClick={close3D}>
+              <div className="o3d-loading">
+                3D 화면을 표시하지 못했어요. 브라우저의 WebGL(하드웨어 가속) 설정을 확인하거나 새로고침해 주세요.
+                <button className="ghost" onClick={close3D}>닫기</button>
+              </div>
+            </div>
+          )}>
+            <Suspense fallback={<div className="o3d-overlay"><div className="o3d-loading">3D 장면 불러오는 중…</div></div>}>
+              <Outfit3DViewer outfit={outfit} weather={weather} onClose={close3D} />
+            </Suspense>
+          </ErrorBoundary>
         )}
 
         <footer>

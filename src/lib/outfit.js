@@ -6,7 +6,7 @@ const BANDS = [
   { min: 20, top: 'long', bottom: 'pants', outer: null, color: '#9bd17a', text: '긴팔 티셔츠, 블라우스, 면바지' },
   { min: 17, top: 'knit', bottom: 'pants', outer: null, color: '#e8a0bf', text: '얇은 니트, 맨투맨, 가디건' },
   { min: 12, top: 'long', bottom: 'pants', outer: 'jacket', color: '#6c8ebf', text: '자켓, 가디건, 청바지' },
-  { min: 9, top: 'knit', bottom: 'pants', outer: 'trench', color: '#c8a57a', text: '트렌치코트, 야상, 니트' },
+  { min: 9, top: 'knit', bottom: 'pants', outer: 'trench', color: '#f1e6d0', text: '트렌치코트, 야상, 니트' },
   { min: 5, top: 'knit', bottom: 'pants', outer: 'coat', color: '#5b5f7a', text: '울 코트, 히트텍, 니트' },
   { min: -99, top: 'knit', bottom: 'pants', outer: 'padding', color: '#2d3a5a', text: '롱패딩, 두꺼운 코트, 기모 하의' },
 ]
@@ -49,6 +49,19 @@ export function recommendOutfit(w, trip) {
     summary: band.text,
   }
 }
+
+// 2D·3D 캐릭터 공통 스타일
+export const SKIN = '#f4cba8'
+export const OUTER_STYLE = {
+  jacket: { color: '#4a6fa5', len: 200, label: '자켓' },
+  trench: { color: '#c9a675', len: 262, label: '트렌치코트' },
+  coat: { color: '#3f3f55', len: 255, label: '울 코트' },
+  padding: { color: '#24304d', len: 268, label: '롱패딩' },
+}
+export const TOP_LABEL = { tshirt: '반팔 티셔츠', long: '긴팔 티셔츠', knit: '니트' }
+export const BOTTOM_LABEL = { shorts: '반바지', pants: '긴 바지' }
+export const PANTS_COLOR = '#3d4a6b'
+export const SHORTS_COLOR = '#5a7bb5'
 
 export const ACCESSORY_LABEL = {
   umbrella: '☂ 우산', boots: '🥾 방수 신발', scarf: '🧣 목도리', gloves: '🧤 장갑',
